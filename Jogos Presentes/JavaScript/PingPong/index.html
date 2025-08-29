@@ -1,15 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PingPong</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogo de Ping Pong</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="static/css/style.css" />
 </head>
-<body>
-    <h1>PingPong Game</h1>
-    <p>This is a simple PingPong game.</p>
-    <footer>⚡ Game developed for fun ⚡</footer>
-    <script src="static/js/script.js"></script>
-    <link rel="stylesheet" href="static/css/style.css">
+<body class="bg-dark text-white d-flex flex-column align-items-center justify-content-center vh-100">
+
+  <!-- Menu Inicial -->
+  <div id="menu" class="menu-container text-center">
+    <h1 class="mb-4">🎮 Ping Pong</h1>
+    <div class="card bg-secondary bg-opacity-25 p-4 rounded-4">
+      <h3 class="mb-4">Selecione o Modo de Jogo</h3>
+      
+      <div class="mb-4">
+        <button class="btn btn-outline-light btn-lg me-3 mode-btn active" data-mode="multiplayer">
+          🎮 Multiplayer
+        </button>
+        <button class="btn btn-outline-light btn-lg mode-btn" data-mode="singleplayer">
+          🤖 Single Player
+        </button>
+      </div>
+      
+      <div id="instructions" class="mb-4">
+        <h5>Controles Multiplayer:</h5>
+        <p>Jogador 1: W (cima) / S (baixo)</p>
+        <p>Jogador 2: ↑ (cima) / ↓ (baixo)</p>
+      </div>
+      
+      <button id="startBtn" class="btn btn-success btn-lg px-5">
+        ▶️ Iniciar Jogo
+      </button>
+    </div>
+  </div>
+
+  <!-- Jogo -->
+  <div id="game" class="game-container d-none">
+    <h1 class="mb-4">Jogo de Ping Pong</h1>
+    
+    <div class="game-canvas border border-light rounded">
+      <canvas id="pong" width="700" height="400"></canvas>
+    </div>
+
+    <div class="mt-3 d-flex justify-content-between w-50">
+      <div>Jogador 1: <span id="scoreLeft">0</span></div>
+      <div>Jogador 2: <span id="scoreRight">0</span></div>
+    </div>
+
+    <div class="mt-3">
+      <button id="pauseBtn" class="btn btn-warning btn-sm me-2">⏸️ Pausar</button>
+      <button id="menuBtn" class="btn btn-secondary btn-sm">🏠 Menu</button>
+    </div>
+  </div>
+
+  <script src="static/js/script.js"></script>
 </body>
 </html>

@@ -1,19 +1,94 @@
-/* Jogo de PingPong */
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
 }
-h1 {
-    color: #333;
+
+.menu-container {
+  max-width: 500px;
+  width: 100%;
 }
-footer {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #666;
+
+.mode-btn {
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.mode-btn.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+}
+
+.mode-btn:hover {
+  transform: translateY(-2px);
+}
+
+.game-container {
+  text-align: center;
+}
+
+.game-canvas {
+  background-color: #222;
+  position: relative;
+  margin: 0 auto;
+}
+
+canvas {
+  display: block;
+  background-color: #000;
+  border-radius: 5px;
+}
+
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+#instructions {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #0dcaf0;
+}
+
+.card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .game-canvas {
+    width: 95%;
+  }
+  
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+  
+  .mode-btn {
+    min-width: 120px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.2rem;
+  }
+  
+  .btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
 }
