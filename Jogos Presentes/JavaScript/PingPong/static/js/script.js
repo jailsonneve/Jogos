@@ -21,6 +21,8 @@ let gameMode = "multiplayer";
 let gameRunning = false;
 let gamePaused = false;
 let animationId;
+let waitingForMove = false; // flag para esperar movimento inicial
+let aiDifficulty = 0.3; // dificuldade inicial da IA (vai crescendo)
 
 // Inicialização do jogo
 function initGame() {
@@ -49,6 +51,7 @@ function initGame() {
 
   scoreLeft = 0;
   scoreRight = 0;
+  aiDifficulty = 0.3; // reseta a dificuldade no começo
   document.getElementById("scoreLeft").textContent = "0";
   document.getElementById("scoreRight").textContent = "0";
 }
@@ -81,17 +84,58 @@ function drawScores() {
   ctx.font = "32px Arial";
   ctx.fillText(scoreLeft, canvas.width / 4, 50);
   ctx.fillText(scoreRight, 3 * canvas.width / 4, 50);
+
+  const diff = document.getElementById("difficultyDisplay");
+
+  // Mostrar dificuldade no canto superior direito
+  if (gameMode === "singleplayer") {
+    diff.font = "20px Arial";
+    diff.textContent = "Dificuldade: " + aiDifficulty.toFixed(2), canvas.width - 200, 30;
+  }
 }
 
-// Lógica da IA para single player
+// Flags de erro da IA
+let aiMistake = false;
+let aiMistakeDirection = 0;
+
+// IA adaptativa
 function updateAIPaddle() {
   if (gameMode === "singleplayer") {
-    // IA simples: segue a bola com um pequeno delay
-    const targetY = ball.y - paddleHeight / 2;
+    if (aiMistake) {
+      // IA continua no erro até bater no topo ou no chão
+      rightPaddle.dy = aiMistakeDirection * rightPaddle.speed;
+
+      if (
+        (aiMistakeDirection < 0 && rightPaddle.y <= 0) ||
+        (aiMistakeDirection > 0 && rightPaddle.y + paddleHeight >= canvas.height)
+      ) {
+        aiMistake = false; // reset do erro
+        rightPaddle.dy = 0;
+      }
+      return; // não processa lógica normal enquanto erra
+    }
+
+    // margem de erro diminui conforme a dificuldade aumenta
+    const errorMargin = (1 - aiDifficulty) * 60;
+    const targetY =
+      ball.y - paddleHeight / 2 +
+      (Math.random() * errorMargin - errorMargin / 2);
     const diff = targetY - rightPaddle.y;
-    
-    if (Math.abs(diff) > 5) {
-      rightPaddle.dy = diff > 0 ? rightPaddle.speed * 0.8 : -rightPaddle.speed * 0.8;
+
+    if (Math.abs(diff) > 10) {
+      let direction = diff > 0 ? 1 : -1;
+
+      // Chance da IA cometer um erro e inverter totalmente o controle
+      const errorChance = (1 - aiDifficulty) * 0.2; // até 20% de chance
+      if (Math.random() < errorChance) {
+        aiMistake = true;
+        aiMistakeDirection = direction * -1; // vai pro lado errado até bater no limite
+        return;
+      }
+
+      // Ajuste da velocidade conforme dificuldade
+      const reactionSpeed = rightPaddle.speed * (0.8 + aiDifficulty);
+      rightPaddle.dy = direction * reactionSpeed;
     } else {
       rightPaddle.dy = 0;
     }
@@ -108,18 +152,22 @@ function update() {
 
   // Limita as raquetes dentro do canvas
   if (leftPaddle.y < 0) leftPaddle.y = 0;
-  if (leftPaddle.y + paddleHeight > canvas.height) leftPaddle.y = canvas.height - paddleHeight;
+  if (leftPaddle.y + paddleHeight > canvas.height)
+    leftPaddle.y = canvas.height - paddleHeight;
   if (rightPaddle.y < 0) rightPaddle.y = 0;
-  if (rightPaddle.y + paddleHeight > canvas.height) rightPaddle.y = canvas.height - paddleHeight;
+  if (rightPaddle.y + paddleHeight > canvas.height)
+    rightPaddle.y = canvas.height - paddleHeight;
 
   // IA para single player
   if (gameMode === "singleplayer") {
     updateAIPaddle();
   }
 
-  // Move a bola
-  ball.x += ball.dx;
-  ball.y += ball.dy;
+  // Só move a bola se não estiver esperando movimento
+  if (!waitingForMove) {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+  }
 
   // Colisão com topo e base
   if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
@@ -158,6 +206,12 @@ function update() {
   if (ball.x + ball.radius > canvas.width) {
     scoreLeft++;
     document.getElementById("scoreLeft").textContent = scoreLeft;
+
+    if (aiDifficulty <= 0.9) {
+      // aumenta dificuldade da IA a cada ponto do jogador
+      aiDifficulty = Math.min(1, aiDifficulty + 0.1);
+    }
+
     resetBall();
   }
 }
@@ -165,34 +219,37 @@ function update() {
 function resetBall() {
   ball.x = canvas.width / 2;
   ball.y = canvas.height / 2;
-  ball.dx = -ball.dx;
-  ball.dy = 5 * (Math.random() > 0.5 ? 1 : -1);
   ball.speed = 5;
+  ball.dx = 5 * (Math.random() > 0.5 ? 1 : -1);
+  ball.dy = 5 * (Math.random() > 0.5 ? 1 : -1);
+  waitingForMove = true; // só começa de novo quando alguém mover
 }
 
 function draw() {
-  // Limpa o canvas
   drawRect(0, 0, canvas.width, canvas.height, "black");
-
-  // Desenha a rede
   drawNet();
-
-  // Desenha as raquetes
   drawRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight, "white");
   drawRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight, "white");
-
-  // Desenha a bola
   drawCircle(ball.x, ball.y, ball.radius, "white");
-
-  // Desenha os scores
   drawScores();
 
-  // Desenha texto de pausa
   if (gamePaused) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.font = "48px Arial";
     ctx.textAlign = "center";
     ctx.fillText("PAUSADO", canvas.width / 2, canvas.height / 2);
+    ctx.textAlign = "left";
+  }
+
+  if (waitingForMove) {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.font = "28px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      "Aguardando movimento para iniciar...",
+      canvas.width / 2,
+      canvas.height / 2
+    );
     ctx.textAlign = "left";
   }
 }
@@ -209,6 +266,14 @@ function gameLoop() {
 document.addEventListener("keydown", (e) => {
   if (!gameRunning || gamePaused) return;
 
+  // libera a bola no primeiro movimento
+  if (
+    waitingForMove &&
+    ["w", "W", "s", "S", "ArrowUp", "ArrowDown"].includes(e.key)
+  ) {
+    waitingForMove = false;
+  }
+
   switch (e.key) {
     case "w":
     case "W":
@@ -219,14 +284,10 @@ document.addEventListener("keydown", (e) => {
       leftPaddle.dy = leftPaddle.speed;
       break;
     case "ArrowUp":
-      if (gameMode === "multiplayer") {
-        rightPaddle.dy = -rightPaddle.speed;
-      }
+      if (gameMode === "multiplayer") rightPaddle.dy = -rightPaddle.speed;
       break;
     case "ArrowDown":
-      if (gameMode === "multiplayer") {
-        rightPaddle.dy = rightPaddle.speed;
-      }
+      if (gameMode === "multiplayer") rightPaddle.dy = rightPaddle.speed;
       break;
     case " ":
       togglePause();
@@ -250,13 +311,12 @@ document.addEventListener("keyup", (e) => {
 });
 
 // Controles da UI
-modeBtns.forEach(btn => {
+modeBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    modeBtns.forEach(b => b.classList.remove("active"));
+    modeBtns.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     gameMode = btn.dataset.mode;
-    
-    // Atualiza instruções
+
     if (gameMode === "singleplayer") {
       instructions.innerHTML = `
         <h5>Controles Single Player:</h5>
@@ -283,15 +343,16 @@ function startGame() {
   initGame();
   gameRunning = true;
   gamePaused = false;
+  waitingForMove = true; // só libera no primeiro movimento
   gameLoop();
 }
 
 function togglePause() {
   if (!gameRunning) return;
-  
+
   gamePaused = !gamePaused;
   pauseBtn.textContent = gamePaused ? "▶️ Continuar" : "⏸️ Pausar";
-  
+
   if (!gamePaused) {
     gameLoop();
   }

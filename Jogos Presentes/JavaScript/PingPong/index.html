@@ -40,11 +40,16 @@
   <div id="game" class="game-container d-none">
     <h1 class="mb-4">Jogo de Ping Pong</h1>
     
-    <div class="game-canvas border border-light rounded">
+    <div class="game-canvas border border-light rounded position-relative">
       <canvas id="pong" width="700" height="400"></canvas>
+
+      <!-- Indicador de dificuldade -->
+      <div id="difficultyDisplay" class="position-absolute top-0 end-0 m-2 px-2 py-1 bg-dark bg-opacity-75 text-white rounded small">
+        Dificuldade: 0.30
+      </div>
     </div>
 
-    <div class="mt-3 d-flex justify-content-between w-50">
+    <div class="mt-3 d-flex justify-content-between w-60">
       <div>Jogador 1: <span id="scoreLeft">0</span></div>
       <div>Jogador 2: <span id="scoreRight">0</span></div>
     </div>
