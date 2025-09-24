@@ -1,386 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verdade ou Desafio - Jogo Divertido</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            transition: background 0.3s ease;
-        }
-
-        body.light-theme {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .theme-toggle {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: background 0.3s;
-        }
-
-        body.light-theme .theme-toggle {
-            background: rgba(0,0,0,0.1);
-            color: #333;
-        }
-
-        .game-container {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        body.light-theme .game-container {
-            background: rgba(255,255,255,0.8);
-            color: #333;
-        }
-
-        .player-setup {
-            margin-bottom: 20px;
-        }
-
-        .player-input {
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            margin: 5px;
-            width: 200px;
-            font-size: 16px;
-        }
-
-        .add-player-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .add-player-btn:hover {
-            background: #ff5252;
-        }
-
-        .players-list {
-            list-style: none;
-            margin: 10px 0;
-        }
-
-        .players-list li {
-            background: rgba(255,255,255,0.2);
-            margin: 5px;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        body.light-theme .players-list li {
-            background: rgba(0,0,0,0.1);
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            min-width: 120px;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn.truth {
-            background: linear-gradient(45deg, #a8e6cf, #88d8a3);
-        }
-
-        .btn.dare {
-            background: linear-gradient(45deg, #ff9ff3, #f368e0);
-        }
-
-        .btn.clear {
-            background: #6c5ce7;
-        }
-
-        #result {
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 15px;
-            font-size: 1.1em;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.5s ease;
-        }
-
-        body.light-theme #result {
-            background: rgba(0,0,0,0.1);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .history {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .history h3 {
-            margin-bottom: 10px;
-        }
-
-        .history-item {
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 10px;
-            border-left: 4px solid #ff6b6b;
-        }
-
-        body.light-theme .history-item {
-            background: rgba(0,0,0,0.05);
-            border-left-color: #333;
-        }
-
-        .round-counter {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            .buttons { flex-direction: column; align-items: center; }
-            .btn { width: 80%; max-width: 200px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdade ou Desafio</title>
+  <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>🃏 Verdade ou Desafio 🃏</h1>
-        <button class="theme-toggle" onclick="toggleTheme()">🌙 Modo Escuro/Claro</button>
-    </header>
+  <header>
+    <h1>🎉 Verdade ou Desafio 🎉</h1>
+  </header>
 
-    <div class="game-container">
-        <div class="player-setup">
-            <input type="text" id="playerName" class="player-input" placeholder="Nome do jogador" aria-label="Nome do jogador">
-            <button class="add-player-btn" onclick="addPlayer()">Adicionar Jogador</button>
-            <ul id="playersList" class="players-list"></ul>
-            <button class="btn" onclick="randomPlayer()" style="margin-top: 10px; background: #00b894;">Sortear Jogador</button>
-        </div>
+  <main class="game-container">
+    <!-- Seleção de Modo -->
+    <section id="modeSelection">
+      <h2>Escolha o modo de jogo</h2>
+      <button onclick="setMode('leve')">😇 Tranquilo</button>
+      <button onclick="setMode('valeTudo')">🔥 Vale Tudo</button>
+    </section>
 
-        <div class="round-counter">
-            Rodada: <span id="roundCount">0</span>
-        </div>
+    <!-- Jogadores -->
+    <section id="playerSection" class="hidden">
+      <h2>Adicionar Jogadores</h2>
+      <input type="text" id="playerName" placeholder="Nome do jogador">
+      <button onclick="addPlayer()">Adicionar</button>
+      <ul id="playerList"></ul>
+    </section>
 
-        <div class="buttons">
-            <button class="btn truth" onclick="selectTruth()">Verdade 💭</button>
-            <button class="btn dare" onclick="selectDare()">Desafio 🔥</button>
-            <button class="btn clear" onclick="clearHistory()">Limpar Histórico</button>
-        </div>
+    <!-- Roleta -->
+    <section id="rouletteSection" class="hidden">
+      <h2>Roleta</h2>
+      <div class="roulette-container">
+        <canvas id="rouletteCanvas" width="400" height="400"></canvas>
+        <div class="pointers"></div>
+      </div>
+      <button onclick="spinRoulette()">Girar Roleta</button>
+      <p id="playersSelected"></p>
+    </section>
 
-        <div id="result"></div>
+    <!-- Cartas -->
+    <section id="cardsSection" class="hidden">
+      <h2>Cartas</h2>
+      <button onclick="drawCard('truth')">🃏 Verdade</button>
+      <button onclick="drawCard('dare')">🔥 Desafio</button>
+      <p id="cardResult"></p>
+    </section>
+  </main>
 
-        <div class="history">
-            <h3>Histórico (Últimos 5)</h3>
-            <div id="historyList"></div>
-        </div>
-    </div>
-
-    <script>
-        // Listas de Verdades e Desafios (em português, leves/moderados)
-        const truths = [
-            "Qual foi o seu maior arrependimento na vida?",
-            "Conte uma mentira que você disse e se arrependeu.",
-            "Quem foi o crush mais embaraçoso que você teve?",
-            "Qual é o seu maior medo irracional?",
-            "Descreva seu primeiro beijo.",
-            "Qual é a coisa mais idiota que você já fez por amor?",
-            "Você já roubou algo? O quê?",
-            "Qual é o seu segredo mais guardado?",
-            "Quem você acha que é o mais bonito(a) aqui?",
-            "Conte uma fantasia sua."
-        ];
-
-        const dares = [
-            "Cante uma música infantil em voz alta.",
-            "Faça 10 flexões ou abdominais.",
-            "Envie uma mensagem engraçada para um contato aleatório.",
-            "Imite um animal por 1 minuto.",
-            "Deixe os outros escolherem sua foto de perfil por um dia.",
-            "Coma uma colher de algo azedo (como limão).",
-            "Dance como se ninguém estivesse olhando.",
-            "Fale com sotaque estrangeiro por 5 minutos.",
-            "Deixe o grupo te maquiar ou arrumar o cabelo.",
-            "Faça uma declaração de amor falsa para alguém do grupo."
-        ];
-
-        let players = [];
-        let history = [];
-        let roundCount = 0;
-        let currentPlayer = '';
-
-        // Adicionar jogador
-        function addPlayer() {
-            const nameInput = document.getElementById('playerName');
-            const name = nameInput.value.trim();
-            if (name && !players.includes(name)) {
-                players.push(name);
-                updatePlayersList();
-                nameInput.value = '';
-            }
-        }
-
-        // Atualizar lista de jogadores
-        function updatePlayersList() {
-            const list = document.getElementById('playersList');
-            list.innerHTML = players.map(p => `<li>${p}</li>`).join('');
-        }
-
-        // Sortear jogador
-        function randomPlayer() {
-            if (players.length === 0) {
-                alert('Adicione pelo menos um jogador!');
-                return;
-            }
-            currentPlayer = players[Math.floor(Math.random() * players.length)];
-            document.getElementById('result').innerHTML = `É a vez de: <strong>${currentPlayer}</strong>!`;
-            playSound(); // Som opcional
-        }
-
-        // Selecionar Verdade
-        function selectTruth() {
-            if (!currentPlayer) {
-                alert('Sorteie um jogador primeiro!');
-                return;
-            }
-            const randomTruth = truths[Math.floor(Math.random() * truths.length)];
-            displayResult(`Verdade para ${currentPlayer}: ${randomTruth}`);
-            addToHistory(`Verdade: ${randomTruth} (${currentPlayer})`);
-            roundCount++;
-            updateRoundCount();
-        }
-
-        // Selecionar Desafio
-        function selectDare() {
-            if (!currentPlayer) {
-                alert('Sorteie um jogador primeiro!');
-                return;
-            }
-            const randomDare = dares[Math.floor(Math.random() * dares.length)];
-            displayResult(`Desafio para ${currentPlayer}: ${randomDare}`);
-            addToHistory(`Desafio: ${randomDare} (${currentPlayer})`);
-            roundCount++;
-            updateRoundCount();
-        }
-
-        // Exibir resultado
-        function displayResult(text) {
-            document.getElementById('result').innerHTML = text;
-        }
-
-        // Adicionar ao histórico (máx 5)
-        function addToHistory(item) {
-            history.unshift(item);
-            if (history.length > 5) history.pop();
-            updateHistoryList();
-        }
-
-        // Atualizar histórico
-        function updateHistoryList() {
-            const list = document.getElementById('historyList');
-            list.innerHTML = history.map(h => `<div class="history-item">${h}</div>`).join('');
-        }
-
-        // Limpar histórico
-        function clearHistory() {
-            history = [];
-            updateHistoryList();
-            roundCount = 0;
-            updateRoundCount();
-            displayResult('Histórico limpo! Vamos recomeçar.');
-        }
-
-        // Atualizar contador de rodadas
-        function updateRoundCount() {
-            document.getElementById('roundCount').textContent = roundCount;
-        }
-
-        // Som simples (opcional, usa Web Audio API)
-        function playSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
-        }
-
-        // Toggle tema
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-        }
-
-        // Inicialização
-        updateHistoryList();
-    </script>
+  <script src="static/js/script.js"></script>
 </body>
 </html>

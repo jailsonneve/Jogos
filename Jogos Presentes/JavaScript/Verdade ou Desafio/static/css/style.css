@@ -1,37 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    padding: 20px;
-  }
-  
-  button {
-    margin: 5px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    background: #ff4d6d;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  button:hover {
-    background: #e60039;
-  }
-  
-  #bottle {
-    width: 150px;
-    margin: 20px;
-    transition: transform 3s ease-out;
-  }
-  
-  .cards {
-    margin-top: 20px;
-  }
-  
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  margin: 20px 0;
+}
+
+.game-container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+input, button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+button {
+  background: #ff4d6d;
+  color: white;
+}
+
+button:hover {
+  background: #e60039;
+}
+
+#playerList {
+  list-style: none;
+  margin-top: 10px;
+}
+
+#playerList li {
+  margin: 5px 0;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+}
+
+.roulette-container {
+  position: relative;
+  display: inline-block;
+}
+
+#rouletteCanvas {
+  border-radius: 50%;
+  border: 5px solid rgba(255,255,255,0.3);
+}
+
+.pointers::before,
+.pointers::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 15px solid transparent;
+}
+
+.pointers::before {
+  border-right: 20px solid yellow;
+  transform: translate(-200px, -50%) rotate(0deg);
+}
+
+.pointers::after {
+  border-left: 20px solid cyan;
+  transform: translate(200px, -50%) rotate(0deg);
+}
+
+#playersSelected {
+  margin-top: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+#cardResult {
+  margin-top: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
