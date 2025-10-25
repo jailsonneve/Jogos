@@ -7,17 +7,29 @@
   <meta name="description" content="Jogo Faz ou Bebe - Desafios insanos para apimentar suas noites!">
   <meta name="keywords" content="Faz ou Bebe, jogo, desafios, diversão, insano">
   <meta name="author" content="JailsonNeve">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.min.css" rel="stylesheet">
   <link rel="icon" href="https://img.icons8.com/?size=100&id=46389&format=png&color=000000">
-  <title>Faz ou Bebe 🔥</title>
+  <title>🔥 Faz ou Bebe 🔥</title>
 </head>
 <body>
 
   <h1>🔥 Faz ou Bebe 🔥</h1>
   <p>Clique no botão para sortear um desafio insano:</p>
-  <button onclick="sortearDesafio()">Sortear Carta</button>
+
+  <div class="btn-container">
+    <button id="btnSortear">Sortear Carta</button>
+    <button id="btnLimpar">Limpar Desafios</button>
+  </div>
+
+  <p id="contador">Desafios restantes: -- / --</p>
+
   <div id="desafio" style="display: none;"></div>
 
   <footer>⚡ Jogo desenvolvido para noites insanas ⚡</footer>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="static/js/script.js"></script>
 </body>

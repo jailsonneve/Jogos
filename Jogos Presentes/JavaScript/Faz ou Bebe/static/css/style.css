@@ -25,10 +25,17 @@ p {
     margin-bottom: 25px;
 }
 
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
 button {
     padding: 15px 40px;
     font-size: 20px;
-    margin-top: 20px;
     background: none;
     border: 2px solid #ff4b5c;
     border-radius: 50px;
@@ -48,8 +55,28 @@ button:hover {
     transform: scale(1.05);
 }
 
+#btnLimpar {
+    border-color: #ffd700;
+    color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+#btnLimpar:hover {
+    background: #ffd700;
+    color: #111;
+    box-shadow: 0 0 20px #ffd700, 0 0 40px #ffec8b;
+}
+
+#contador {
+    font-size: 1.1rem;
+    color: #ffd700;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
 #desafio {
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 1.8rem;
     color: #ffd700;
     max-width: 700px;
@@ -64,10 +91,10 @@ button:hover {
     min-height: 80px;
 }
 
-#desafio:hover {
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-    transform: scale(1.02);
+footer {
+    margin-top: 50px;
+    font-size: 0.9rem;
+    color: #777;
 }
 
 @keyframes fadeIn {
@@ -75,8 +102,6 @@ button:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-footer {
-    margin-top: 50px;
-    font-size: 0.9rem;
-    color: #777;
+@media (max-width: 469px) {
+    h1 { font-size: 2.2rem; }
 }
